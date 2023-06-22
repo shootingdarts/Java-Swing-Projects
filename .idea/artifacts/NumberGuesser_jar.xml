@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NumberGuesser:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NumberGuesser_jar</output-path>
+    <root id="archive" name="NumberGuesser.jar">
+      <element id="module-output" name="NumberGuesser" />
+    </root>
+  </artifact>
+</component>
