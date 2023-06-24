@@ -1,4 +1,4 @@
-package basic;
+package NumberGuesser;
 
 import javax.swing.*;
 import java.awt.*;

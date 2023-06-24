@@ -1,7 +1,7 @@
-package basic;
+package NumberGuesser;
 
-import javax.swing.*;
-import javax.swing.border.Border;
+import PixelArt.PixelArt;
+
 import java.awt.*;
 
 public class Main {
