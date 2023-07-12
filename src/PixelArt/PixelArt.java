@@ -19,14 +19,15 @@ public class PixelArt extends MouseAdapter {
     JButton clear;
     JButton eraser;
     JButton pen;
+    JButton background;
     JButton pickColor;
     JButton save;
     JButton grid;
-    JPanel colorDisplay;
     Color currColor;
     char currTool;
     int dim = 16;
     boolean held = false;
+    boolean border = true;
     ArrayList<JPanel> pixels;
 
     PixelArt() {
@@ -34,33 +35,35 @@ public class PixelArt extends MouseAdapter {
 
         frame = new JFrame();
         frame.setLayout(new BorderLayout());
+        frame.setSize(500,500);
 
         canvas = new Panel(new GridLayout(dim,dim));
         fillGrid();
+        canvas.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 
         setClear();
         setEraser();
         setPen();
+        setBackground();
         setPickColor();
         setSave();
         setGrid();
 
-        colorDisplay = new JPanel();
 
         tools = new JPanel();
         tools.setLayout(new GridLayout(7,1));
         tools.add(clear);
         tools.add(pen);
+        tools.add(background);
         tools.add(eraser);
         tools.add(pickColor);
         tools.add(save);
-        tools.add(colorDisplay);
         tools.add(grid);
 
         frame.add(canvas, BorderLayout.CENTER);
-        frame.add(tools, BorderLayout.WEST);
+        frame.add(tools, BorderLayout.EAST);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.pack();
         frame.setVisible(true);
         currColor = new Color(0,0,0);
@@ -114,15 +117,30 @@ public class PixelArt extends MouseAdapter {
         });
     }
 
+    private void setBackground(){
+        background = new JButton();
+        background.setText("Background");
+        background.setFocusable(false);
+        background.addActionListener(e -> {
+            if(e.getSource() == background) {
+                new JColorChooser();
+                Color newColor = JColorChooser.showDialog(null, "Select a color.", Color.BLACK);
+                for(JPanel pixel : pixels) {
+                    pixel.setBackground(newColor);
+                }
+            }
+        });
+    }
+
     private void setPickColor(){
         pickColor = new JButton();
-        pickColor.setText("Color");
+        pickColor.setBackground(Color.BLACK);
         pickColor.setFocusable(false);
         pickColor.addActionListener(e -> {
             if(e.getSource() == pickColor) {
                 new JColorChooser();
                 currColor = JColorChooser.showDialog(null, "Select a color.", Color.BLACK);
-                colorDisplay.setBackground(currColor);
+                pickColor.setBackground(currColor);
             }
         });
     }
@@ -133,7 +151,18 @@ public class PixelArt extends MouseAdapter {
         save.setFocusable(false);
         save.addActionListener(e -> {
             if(e.getSource() == save) {
-                canvas.saveImage("test", "png");
+                if(border) {
+                    for(JPanel pixel : pixels) {
+                        pixel.setBorder(BorderFactory.createEmptyBorder());
+                    }
+                    canvas.saveImage("test", "png");
+                    for(JPanel pixel : pixels) {
+                        pixel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    }
+                }
+                else {
+                    canvas.saveImage("test", "png");
+                }
             }
         });
     }
@@ -143,8 +172,17 @@ public class PixelArt extends MouseAdapter {
         grid.setFocusable(false);
         grid.addActionListener( e -> {
             if (e.getSource() == grid) {
-                for(JPanel pixel : pixels) {
-                    pixel.setBorder(BorderFactory.createEmptyBorder());
+                if (border) {
+                    for(JPanel pixel : pixels) {
+                        pixel.setBorder(BorderFactory.createEmptyBorder());
+                    }
+                    border = false;
+                }
+                else {
+                    for(JPanel pixel : pixels) {
+                        pixel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    }
+                    border = true;
                 }
             }
         });
