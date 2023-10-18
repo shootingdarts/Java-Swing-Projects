@@ -1,4 +1,6 @@
-# Number-Guesser
-Guess a number from 1-99
+# Java Swing
+## Number Guesser
+The player guesses a random number from 1-99 with given hints
 
-Version 0.0.1 (Basic functionality)
+## Pixel Art Maker
+The user can create and save pixel art using tools
